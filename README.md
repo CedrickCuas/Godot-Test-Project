@@ -6,3 +6,6 @@ Week 1
 
 Week 2 Activity 1
 <img width="1146" height="653" alt="image" src="https://github.com/user-attachments/assets/40b03393-aa4b-4802-98e8-f96e909e47aa" />
+
+Week 2 Activity 2
+<img width="1286" height="506" alt="image" src="https://github.com/user-attachments/assets/a617783f-903f-4f03-bec9-9e841c596175" />
