@@ -1,7 +1,11 @@
 [gd_scene format=3 uid="uid://cq3x3ebrtlw3d"]
 
 [ext_resource type="Script" uid="uid://c7i7684mdi1nw" path="res://Scripts/player.gd" id="1_cvnsp"]
-[ext_resource type="Texture2D" uid="uid://b4thkd0b054lx" path="res://Character/Soldier.png" id="1_v0iea"]
+[ext_resource type="Texture2D" uid="uid://b4thkd0b054lx" path="res://Player/Soldier.png" id="1_v0iea"]
+[ext_resource type="PackedScene" uid="uid://bfwbwdiigai3v" path="res://Scenes/arrow_projectile.tscn" id="2_6t5aa"]
+[ext_resource type="AudioStream" uid="uid://bwuqcpalpxdej" path="res://SFX/among-us-roundstart.mp3" id="4_vgqql"]
+[ext_resource type="AudioStream" uid="uid://dy50i6p8bew2r" path="res://SFX/minecraft-sword-swing.mp3" id="5_x3wgy"]
+[ext_resource type="AudioStream" uid="uid://3xbh3un3ki4p" path="res://SFX/bow_shoot.mp3" id="6_3smsa"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_cvnsp"]
 atlas = ExtResource("1_v0iea")
@@ -50,6 +54,22 @@ region = Rect2(400, 300, 100, 100)
 [sub_resource type="AtlasTexture" id="AtlasTexture_ukyrk"]
 atlas = ExtResource("1_v0iea")
 region = Rect2(500, 300, 100, 100)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_11gg7"]
+atlas = ExtResource("1_v0iea")
+region = Rect2(0, 600, 100, 100)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_qpa8y"]
+atlas = ExtResource("1_v0iea")
+region = Rect2(100, 600, 100, 100)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_sbwqj"]
+atlas = ExtResource("1_v0iea")
+region = Rect2(200, 600, 100, 100)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_xwi16"]
+atlas = ExtResource("1_v0iea")
+region = Rect2(300, 600, 100, 100)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_7dp3o"]
 atlas = ExtResource("1_v0iea")
@@ -164,9 +184,9 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_3smsa")
 }],
-"loop": true,
+"loop": false,
 "name": &"Attack 1",
-"speed": 10.0
+"speed": 6.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -187,9 +207,26 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_ukyrk")
 }],
-"loop": true,
+"loop": false,
 "name": &"Attack 2",
-"speed": 10.0
+"speed": 6.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_11gg7")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_qpa8y")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_sbwqj")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_xwi16")
+}],
+"loop": false,
+"name": &"Death",
+"speed": 4.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -212,7 +249,7 @@ animations = [{
 }],
 "loop": true,
 "name": &"Idle",
-"speed": 10.0
+"speed": 6.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -241,7 +278,7 @@ animations = [{
 }],
 "loop": true,
 "name": &"Moving",
-"speed": 10.0
+"speed": 8.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -271,25 +308,67 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_8gxox")
 }],
-"loop": true,
+"loop": false,
 "name": &"Shooting",
-"speed": 10.0
+"speed": 9.0
 }]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_qpa8y"]
-radius = 5.0
-height = 16.0
+radius = 6.0
+height = 18.0
 
-[node name="CharacterBody2D" type="CharacterBody2D" unique_id=1185673054]
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_cvnsp"]
+size = Vector2(12, 15)
+
+[node name="Player" type="CharacterBody2D" unique_id=1185673054 groups=["Player"]]
+collision_layer = 3
 script = ExtResource("1_cvnsp")
+arrow_scene = ExtResource("2_6t5aa")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=744981628]
 position = Vector2(0, -7)
 sprite_frames = SubResource("SpriteFrames_11gg7")
-animation = &"Idle"
+animation = &"Shooting"
 autoplay = "Idle"
-frame_progress = 0.41230613
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=615244729]
-position = Vector2(0, -8)
+position = Vector2(0, -9)
 shape = SubResource("CapsuleShape2D_qpa8y")
+
+[node name="Camera2D" type="Camera2D" parent="." unique_id=2068717894]
+zoom = Vector2(3.5, 3.5)
+
+[node name="Muzzle" type="Marker2D" parent="." unique_id=771971907]
+position = Vector2(10, -6)
+
+[node name="ShotTimer" type="Timer" parent="." unique_id=126421913]
+wait_time = 0.7
+one_shot = true
+
+[node name="MeleeTimer" type="Timer" parent="." unique_id=1052506736]
+wait_time = 0.3
+one_shot = true
+
+[node name="SFX_Death" type="AudioStreamPlayer2D" parent="." unique_id=752409246]
+stream = ExtResource("4_vgqql")
+
+[node name="SFX_Sword" type="AudioStreamPlayer2D" parent="." unique_id=1908073178]
+stream = ExtResource("5_x3wgy")
+
+[node name="SFX_Bow" type="AudioStreamPlayer2D" parent="." unique_id=367012980]
+stream = ExtResource("6_3smsa")
+
+[node name="MeleeHitbox" type="Area2D" parent="." unique_id=1353827436]
+collision_layer = 0
+collision_mask = 2
+monitoring = false
+monitorable = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="MeleeHitbox" unique_id=1370556941]
+position = Vector2(13, -7.5)
+shape = SubResource("RectangleShape2D_cvnsp")
+
+[connection signal="animation_finished" from="AnimatedSprite2D" to="." method="_on_animated_sprite_2d_animation_finished"]
+[connection signal="timeout" from="ShotTimer" to="." method="_on_shot_timer_timeout"]
+[connection signal="timeout" from="MeleeTimer" to="." method="_on_melee_timer_timeout"]
+[connection signal="body_entered" from="MeleeHitbox" to="." method="_on_melee_hitbox_body_entered"]

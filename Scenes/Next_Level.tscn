@@ -1,0 +1,20 @@
+[gd_scene format=3 uid="uid://cfuww2hqvx62y"]
+
+[ext_resource type="Script" uid="uid://ci2a08mxkrq4d" path="res://Scripts/next_level.gd" id="1_uypwt"]
+[ext_resource type="AudioStream" uid="uid://c1v0mnap34ff" path="res://SFX/vine-boom.mp3" id="2_bsmei"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_yxirn"]
+size = Vector2(20, 38)
+
+[node name="Goal" type="Area2D" unique_id=488920040]
+script = ExtResource("1_uypwt")
+next_stage_path = "uid://clnbdwd3q0s44"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=748447195]
+position = Vector2(0, -9)
+shape = SubResource("RectangleShape2D_yxirn")
+
+[node name="NxtLvl_SFX" type="AudioStreamPlayer2D" parent="." unique_id=1366271444]
+stream = ExtResource("2_bsmei")
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
